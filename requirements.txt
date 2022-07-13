@@ -1,8 +1,8 @@
-torch>=1.12.0
-numpy==1.22.3
-transformers==4.20.1
-scikit-image==0.18.1
-flask==2.1.0
-gunicorn==20.1.0
-tokenizers==0.12.1
+torch
+numpy
+transformers
+scikit-image
+flask
+gunicorn
+tokenizers
 git+https://github.com/openai/CLIP.git
