@@ -1,5 +1,4 @@
-torch>=1.12.0
-torch>=1.2.0; python_version=='2.7'
+torch>=1.12.0; python_version=='3.10.5'
 numpy==1.22.3
 transformers==4.20.1
 clip==0.2.0
