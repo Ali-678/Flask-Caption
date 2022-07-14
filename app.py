@@ -1,25 +1,56 @@
-import os
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, render_template, url_for, request, redirect
 from model import predict
+import warnings
+warnings.filterwarnings("ignore")
 
-app = Flask(__name__)
+
+
+app = Flask(__name__,template_folder='template')
+
 
 @app.route('/')
-def home():
+def hello():
     return render_template('index.html')
 
-UPLOAD_FOLDER = os.path.join('static','uploads')
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-@app.route('/upload', methods=['POST'])
+@app.route('/', methods = ['POST'])
 def upload_file():
-    file = request.files['image']
-    f = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+	if request.method == 'POST':
+		img = request.files['image']
+
+		# print(img)
+		# print(img.filename)
+
+		img.save("static/"+img.filename)
+
+	
+		caption = caption_this_image("static/"+img.filename)
+		result_dic = {
+			
+			'description' : caption
+		}
+        
+
+	return render_template('index.html', results = result_dic)
+
+allowed_extensions = ['jpg', 'png', 'pdf']
+
+def check_file_extension(filename):
+    return filename.split('.')[-1] in allowed_extensions
+
+@app.route('/', methods = ['POST'])
+def upload_pdf():
     
-    caption= predict(f)
-    #caption = "test_caption"
-    #return redirect(url_for('hello', caption=caption))
-    return render_template('index.html', caption=caption, image_path=f)
-    
-if __name__ == "__main__":
-    app.run(debug=True)
+    if request.method == 'POST':
+        
+        pdf = request.files['pdf']
+        pdf.save("static/"+pdf.filename)
+        caption = extract("static/"+pdf.filename)
+        result_dic = {
+            
+            'description' : caption}
+    return render_template('index.html', results = result_dic)
+
+
+if __name__ == '__main__':
+	app.run(debug = True,use_debugger=False, use_reloader=False)
