@@ -1,25 +1,21 @@
 # For more information, please refer to https://aka.ms/vscode-docker-python
 FROM python:3.8-slim
+ARG port
 
-EXPOSE 5002
-
-# Keeps Python from generating .pyc files in the container
-ENV PYTHONDONTWRITEBYTECODE=1
-
-# Turns off buffering for easier container logging
-ENV PYTHONUNBUFFERED=1
-
-# Install pip requirements
-COPY requirements.txt .
-RUN python -m pip install -r requirements.txt
-
-WORKDIR /app
+USER root
 COPY . /app
+WORKDIR /app
 
-# Creates a non-root user with an explicit UID and adds permission to access the /app folder
-# For more info, please refer to https://aka.ms/vscode-docker-python-configure-containers
-RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
-USER appuser
+ENV PORT=$port
 
-# During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
-CMD ["gunicorn", "--bind", "0.0.0.0:5002", "app:app"]
+RUN apt-get update && apt-get install -y --no-install-recommends apt-utils \
+    && apt-get -y install curl \
+    && apt-get install libgomp1
+
+RUN chgrp -R 0 /app \
+    && chmod -R g=u /app \
+    && pip install pip --upgrade \
+    && pip install -r requirements.txt
+EXPOSE $PORT
+
+CMD gunicorn app:server --bind 0.0.0.0:$PORT --preload
