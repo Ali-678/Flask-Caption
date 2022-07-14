@@ -1,9 +1,9 @@
 torch
-git
 numpy
 transformers
 scikit-image
 flask
 gunicorn
 tokenizers
+https://github.com/git/git.git
 git+https://github.com/openai/CLIP.git
