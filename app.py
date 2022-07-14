@@ -24,7 +24,7 @@ def upload_file():
 		img.save("static/"+img.filename)
 
 	
-		caption = caption_this_image("static/"+img.filename)
+		caption = predict("static/"+img.filename)
 		result_dic = {
 			
 			'description' : caption
