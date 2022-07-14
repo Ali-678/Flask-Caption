@@ -5,4 +5,4 @@ scikit-image
 flask
 gunicorn
 tokenizers
-git+https://github.com/openai/CLIP.git
+https://github.com/openai/CLIP.git
