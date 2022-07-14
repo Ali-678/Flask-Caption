@@ -21,10 +21,8 @@ def upload_file():
 		# print(img)
 		# print(img.filename)
 
-		img.save("static/"+img.filename)
-
 	
-		caption = predict("static/"+img.filename)
+		caption = predict(img.filename)
 		result_dic = {
 			
 			'description' : caption
