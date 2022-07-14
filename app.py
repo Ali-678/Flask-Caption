@@ -36,7 +36,7 @@ allowed_extensions = ['jpg', 'png', 'pdf']
 def check_file_extension(filename):
     return filename.split('.')[-1] in allowed_extensions
 
-@app.route('/', methods = ['POST'])
+""" @app.route('/', methods = ['POST'])
 def upload_pdf():
     
     if request.method == 'POST':
@@ -48,7 +48,7 @@ def upload_pdf():
             
             'description' : caption}
     return render_template('index.html', results = result_dic)
-
+ """
 
 if __name__ == '__main__':
 	app.run(debug = True,use_debugger=False, use_reloader=False)
